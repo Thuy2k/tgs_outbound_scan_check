@@ -1,0 +1,400 @@
+.tgs-osc-page {
+    padding: 24px;
+    color: #172033;
+}
+
+.tgs-osc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.tgs-osc-head h1 {
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 4px 0 0;
+    font-weight: 700;
+}
+
+.tgs-osc-breadcrumb,
+.tgs-osc-mini-label {
+    color: #667085;
+    font-size: 13px;
+}
+
+.tgs-osc-actions,
+.tgs-osc-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tgs-osc-toolbar {
+    padding: 14px;
+    background: #fff;
+    border: 1px solid #dce4ef;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.tgs-osc-search {
+    min-width: 280px;
+    flex: 1 1 420px;
+}
+
+.tgs-osc-toolbar .form-select {
+    max-width: 210px;
+}
+
+.tgs-osc-feedback {
+    display: none;
+    position: relative;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    background: #fff;
+    color: #344054;
+    box-shadow: 0 4px 18px rgba(16, 24, 40, 0.04);
+}
+
+.tgs-osc-feedback.is-visible {
+    display: block;
+}
+
+.tgs-osc-feedback strong {
+    display: block;
+    padding-right: 32px;
+    margin-bottom: 4px;
+    color: #101828;
+}
+
+.tgs-osc-feedback-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.72);
+    color: #667085;
+    font-size: 22px;
+    line-height: 26px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.tgs-osc-feedback-close:hover {
+    background: #fff;
+    color: #101828;
+}
+
+.tgs-osc-feedback.is-success {
+    border-color: #abefc6;
+    background: #f6fef9;
+}
+
+.tgs-osc-feedback.is-warning {
+    border-color: #fedf89;
+    background: #fffbeb;
+}
+
+.tgs-osc-feedback.is-danger {
+    border-color: #fecdca;
+    background: #fffbfa;
+}
+
+.tgs-osc-feedback.is-info {
+    border-color: #b2ddff;
+    background: #f5fbff;
+}
+
+.tgs-osc-analysis-list {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
+.tgs-osc-analysis-list li {
+    margin: 3px 0;
+}
+
+.tgs-osc-table-wrap,
+.tgs-osc-scan-panel,
+.tgs-osc-summary-row,
+.tgs-osc-note-log {
+    background: #fff;
+    border: 1px solid #dce4ef;
+    border-radius: 8px;
+    box-shadow: 0 4px 18px rgba(16, 24, 40, 0.04);
+}
+
+.tgs-osc-table-wrap {
+    overflow-x: auto;
+}
+
+.tgs-osc-table {
+    margin-bottom: 0;
+    min-width: 940px;
+}
+
+.tgs-osc-table th {
+    white-space: nowrap;
+    background: #f6f8fb;
+    color: #101828;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.tgs-osc-table td {
+    vertical-align: middle;
+}
+
+.tgs-osc-status {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.tgs-osc-status.is-unchecked,
+.tgs-osc-status.is-draft {
+    background: #eef2f6;
+    color: #475467;
+}
+
+.tgs-osc-status.is-missing,
+.tgs-osc-status.is-short {
+    background: #fff4e5;
+    color: #b54708;
+}
+
+.tgs-osc-status.is-enough,
+.tgs-osc-status.is-done {
+    background: #e8f7ef;
+    color: #027a48;
+}
+
+.tgs-osc-status.is-over,
+.tgs-osc-status.is-extra,
+.tgs-osc-status.is-mixed {
+    background: #fef3f2;
+    color: #b42318;
+}
+
+.tgs-osc-item-row.is-missing,
+.tgs-osc-item-row.is-short {
+    background: #fffaf2;
+}
+
+.tgs-osc-item-row.is-enough {
+    background: #f4fbf7;
+}
+
+.tgs-osc-item-row.is-over,
+.tgs-osc-item-row.is-extra {
+    background: #fff7f6;
+}
+
+.tgs-osc-summary-row {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) repeat(5, minmax(100px, 130px));
+    gap: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.tgs-osc-parent-box {
+    min-width: 0;
+}
+
+.tgs-osc-parent-code {
+    color: #164a9f;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.tgs-osc-parent-note {
+    color: #667085;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tgs-osc-stat {
+    border-left: 1px solid #e4e7ec;
+    padding-left: 12px;
+}
+
+.tgs-osc-stat span {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.tgs-osc-stat small {
+    color: #667085;
+}
+
+.tgs-osc-stat.is-short span { color: #b54708; }
+.tgs-osc-stat.is-enough span { color: #027a48; }
+.tgs-osc-stat.is-over span,
+.tgs-osc-stat.is-extra span { color: #b42318; }
+
+.tgs-osc-scan-panel {
+    position: sticky;
+    top: 118px;
+    z-index: 80;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.tgs-osc-product-search .form-control {
+    height: 48px;
+    font-size: 17px;
+}
+
+.tgs-osc-product-results {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 88px;
+    z-index: 90;
+    background: #fff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    box-shadow: 0 16px 44px rgba(16, 24, 40, 0.14);
+    max-height: 360px;
+    overflow-y: auto;
+    display: none;
+}
+
+.tgs-osc-product-result {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eef2f6;
+    cursor: pointer;
+}
+
+.tgs-osc-product-result:hover {
+    background: #f6f9ff;
+}
+
+.tgs-osc-product-result strong {
+    display: block;
+    color: #164a9f;
+}
+
+.tgs-osc-product-result small {
+    color: #667085;
+}
+
+.tgs-osc-product-stock {
+    min-width: 120px;
+    text-align: right;
+    font-weight: 700;
+}
+
+.tgs-osc-check-qty {
+    width: 110px;
+    text-align: right;
+}
+
+.tgs-osc-note-input {
+    min-width: 190px;
+}
+
+.tgs-osc-note-log {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 16px;
+    padding: 14px;
+    margin-top: 16px;
+}
+
+.tgs-osc-log-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.tgs-osc-log {
+    min-height: 108px;
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid #e4e7ec;
+    border-radius: 8px;
+    padding: 8px 10px;
+    background: #f8fafc;
+    font-size: 13px;
+    color: #475467;
+}
+
+.tgs-osc-log-line {
+    padding: 3px 0;
+    border-bottom: 1px dashed #d0d5dd;
+}
+
+.tgs-osc-parent-preview {
+    min-height: 28px;
+    margin-top: 10px;
+    color: #475467;
+}
+
+.tgs-osc-warning {
+    color: #b42318;
+    margin-top: 12px;
+    font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+    .tgs-osc-summary-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tgs-osc-parent-box {
+        grid-column: 1 / -1;
+    }
+
+    .tgs-osc-note-log {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .tgs-osc-page {
+        padding: 14px;
+    }
+
+    .tgs-osc-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tgs-osc-actions .btn,
+    .tgs-osc-toolbar .btn,
+    .tgs-osc-toolbar .form-select,
+    .tgs-osc-search {
+        width: 100%;
+        max-width: none;
+    }
+
+    .tgs-osc-summary-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tgs-osc-scan-panel {
+        top: 96px;
+    }
+}
