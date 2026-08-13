@@ -898,6 +898,12 @@ class TGS_Outbound_Scan_Check_Helper
         }, $rows)));
         $stock_map = TGS_Global_Product_Source::get_stock_for_skus($skus, get_current_blog_id());
 
+        // Nạp trước cấu hình ĐVT cho cả lô (TGS_Price_List cache theo request)
+        // → tránh mỗi sản phẩm 1 query trong vòng lặp bên dưới.
+        if (class_exists('TGS_Price_List')) {
+            TGS_Price_List::unit_configs_by_skus($skus);
+        }
+
         $items = [];
         foreach ($rows as $row) {
             $product = TGS_Global_Product_Source::normalize_product(
@@ -925,10 +931,23 @@ class TGS_Outbound_Scan_Check_Helper
         return $items;
     }
 
+    /**
+     * Danh sách ĐVT quy đổi của 1 SKU để nhân viên chọn khi quét kiểm hàng.
+     *
+     * Nguồn: BẢNG GIÁ mà website đang áp (wp_global_htsoft_price_list_blog).
+     * Trước đây query thẳng bảng quy đổi, không lọc price_list_id, nên khi hệ
+     * thống có nhiều bảng giá sẽ:
+     *   - Hiện thừa ĐVT của bảng giá khác (shop không dùng ĐVT đó);
+     *   - Trùng tên ĐVT giữa 2 bảng giá thì dòng nào lấy được là do thứ tự
+     *     MySQL trả về → sai TỶ LỆ và sai KHỐI LƯỢNG khi đối soát hàng xuất.
+     * Ngoài ra `WHERE BINARY global_product_sku` chặn index (quét full bảng).
+     *
+     * Phần tử đầu tiên LUÔN là đơn vị nhỏ nhất (is_base = true) — giao diện
+     * chọn mặc định phần tử này, giữ nguyên như cũ để nhân viên không quét
+     * nhầm số lượng.
+     */
     public static function unit_options_for_sku($sku, $base_unit = '')
     {
-        global $wpdb;
-
         $sku = trim((string) $sku);
         $base_unit = trim((string) $base_unit);
         $units = [[
@@ -936,29 +955,19 @@ class TGS_Outbound_Scan_Check_Helper
             'ratio' => 1.0,
             'unit_weight_kg' => null,
             'is_base' => true,
+            'is_default_unit' => 0,
         ]];
 
-        if ($sku === '') {
+        if ($sku === '' || !class_exists('TGS_Price_List')) {
             return $units;
         }
 
-        $table = $wpdb->base_prefix . 'global_htsoft_stock_convert';
-        if (method_exists('TGS_Global_Product_Source', 'table_exists') && !TGS_Global_Product_Source::table_exists($table)) {
-            return $units;
-        }
-
-        $rows = $wpdb->get_results($wpdb->prepare(
-            "SELECT convert_unit, convert_to_htsoft, unit_weight_kg
-             FROM {$table}
-             WHERE BINARY global_product_sku = %s
-               AND (is_deleted = 0 OR is_deleted IS NULL)
-             ORDER BY convert_unit ASC",
-            $sku
-        ), ARRAY_A) ?: [];
+        $configs = TGS_Price_List::unit_configs_by_skus([$sku]);
+        $rows = $configs[$sku] ?? [];
 
         $seen = [strtolower($units[0]['unit_name']) => true];
         foreach ($rows as $row) {
-            $unit_name = trim((string) ($row['convert_unit'] ?? ''));
+            $unit_name = trim((string) ($row['unit'] ?? ''));
             if ($unit_name === '') {
                 continue;
             }
@@ -968,7 +977,7 @@ class TGS_Outbound_Scan_Check_Helper
                 continue;
             }
 
-            $ratio = self::normalize_number($row['convert_to_htsoft'] ?? 1);
+            $ratio = self::normalize_number($row['ratio'] ?? 1);
             if ($ratio <= 0) {
                 $ratio = 1.0;
             }
@@ -976,10 +985,13 @@ class TGS_Outbound_Scan_Check_Helper
             $units[] = [
                 'unit_name' => $unit_name,
                 'ratio' => $ratio,
-                'unit_weight_kg' => isset($row['unit_weight_kg']) && $row['unit_weight_kg'] !== null
+                'unit_weight_kg' => $row['unit_weight_kg'] !== null
                     ? self::normalize_number($row['unit_weight_kg'])
                     : null,
                 'is_base' => false,
+                // 1 = ĐVT bán chính của bảng giá (POS ưu tiên). Ở màn kiểm hàng
+                // chỉ mang tính thông tin, KHÔNG dùng để chọn sẵn.
+                'is_default_unit' => (int) ($row['is_default_unit'] ?? 0),
             ];
             $seen[$key] = true;
         }
