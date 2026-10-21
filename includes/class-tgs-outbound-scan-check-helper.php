@@ -562,57 +562,12 @@ class TGS_Outbound_Scan_Check_Helper
     }
 
     /**
-     * Thông tin shop đối tác của phiếu cha (local_ledger) nếu phiếu đó là chuyển kho nội bộ KIỂU CŨ (12/14 + transfer_ledger).
-     *
-     * Chuyển kho MỚI là một phiếu global (wp_global_transfer) — không sinh phiếu cha local_ledger nào, nên phiếu kiểm
-     * xuất (khoá theo local_ledger_parent_id) không bao giờ trỏ được tới nó: không có khoá nào để khớp sang bảng global.
-     * Vì vậy hàm chỉ còn đọc transfer_ledger cho phiếu cũ (chỉ đọc, bảng không còn được ghi thêm); bảng không còn /
-     * không thấy dòng → null (giao diện tự ẩn shop đối tác).
+     * Thông tin chuyển kho của phiếu cha local_ledger: luôn null. Chuyển kho nằm ở phiếu global (wp_global_transfer) và
+     * không sinh phiếu cha local_ledger nào để phiếu kiểm xuất trỏ tới (giao diện tự ẩn shop đối tác khi null).
      */
     public static function get_transfer_info($ledger_id)
     {
-        global $wpdb;
-
-        $ledger_id = (int) $ledger_id;
-        if ($ledger_id <= 0) {
-            return null;
-        }
-
-        $table = $wpdb->prefix . 'transfer_ledger';
-        if (!self::table_exists($table)) {
-            return null;
-        }
-
-        $row = $wpdb->get_row($wpdb->prepare(
-            "SELECT transfer_ledger_id, source_blog_id, source_ledger_id, destination_blog_id, destination_ledger_id, transfer_status
-             FROM {$table}
-             WHERE source_ledger_id = %d OR destination_ledger_id = %d
-             ORDER BY transfer_ledger_id DESC
-             LIMIT 1",
-            $ledger_id,
-            $ledger_id
-        ), ARRAY_A);
-
-        if (!$row) {
-            return null;
-        }
-
-        $current_blog_id = (int) get_current_blog_id();
-        $source_blog_id = (int) ($row['source_blog_id'] ?? 0);
-        $destination_blog_id = (int) ($row['destination_blog_id'] ?? 0);
-        $partner_blog_id = $source_blog_id === $current_blog_id ? $destination_blog_id : $source_blog_id;
-        $partner_name = $partner_blog_id > 0 ? get_blog_option($partner_blog_id, 'blogname') : '';
-
-        return [
-            'transfer_ledger_id' => (int) ($row['transfer_ledger_id'] ?? 0),
-            'source_blog_id' => $source_blog_id,
-            'source_ledger_id' => (int) ($row['source_ledger_id'] ?? 0),
-            'destination_blog_id' => $destination_blog_id,
-            'destination_ledger_id' => (int) ($row['destination_ledger_id'] ?? 0),
-            'transfer_status' => (int) ($row['transfer_status'] ?? 0),
-            'partner_blog_id' => $partner_blog_id,
-            'partner_shop_name' => $partner_name ?: ($partner_blog_id ? 'Shop #' . $partner_blog_id : ''),
-        ];
+        return null;
     }
 
     public static function analyze_items(array $items)
