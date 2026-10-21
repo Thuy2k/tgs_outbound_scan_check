@@ -561,6 +561,14 @@ class TGS_Outbound_Scan_Check_Helper
         ];
     }
 
+    /**
+     * Thông tin shop đối tác của phiếu cha (local_ledger) nếu phiếu đó là chuyển kho nội bộ KIỂU CŨ (12/14 + transfer_ledger).
+     *
+     * Chuyển kho MỚI là một phiếu global (wp_global_transfer) — không sinh phiếu cha local_ledger nào, nên phiếu kiểm
+     * xuất (khoá theo local_ledger_parent_id) không bao giờ trỏ được tới nó: không có khoá nào để khớp sang bảng global.
+     * Vì vậy hàm chỉ còn đọc transfer_ledger cho phiếu cũ (chỉ đọc, bảng không còn được ghi thêm); bảng không còn /
+     * không thấy dòng → null (giao diện tự ẩn shop đối tác).
+     */
     public static function get_transfer_info($ledger_id)
     {
         global $wpdb;
